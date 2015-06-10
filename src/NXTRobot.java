@@ -1,9 +1,15 @@
+import lejos.nxt.Motor;
+import lejos.nxt.SensorPort;
+import lejos.nxt.UltrasonicSensor;
+
 public class NXTRobot {
 
-	private static int DEFAULTVALUE = 10;
+	private static int DEFAULTVALUE = 100;
+	private static UltrasonicSensor sensor = new UltrasonicSensor(SensorPort.S4);
+	private static int SLOWVALUE = 30;
 
 	public boolean ehVaga() {
-		return false;
+		return sensor.getDistance() > 30;
 	}
 
 	public void frente(final int rotate) {
@@ -13,6 +19,10 @@ public class NXTRobot {
 
 	public void frente() {
 		frente(DEFAULTVALUE);
+	}
+	
+	public void frenteSlow() {
+		frente(SLOWVALUE);
 	}
 
 	public void reVolanteDireita() {
@@ -29,6 +39,5 @@ public class NXTRobot {
 		Motor.A.rotate(DEFAULTVALUE, true);
 		Motor.C.rotate(DEFAULTVALUE*2);
 	}
-
 }
 
