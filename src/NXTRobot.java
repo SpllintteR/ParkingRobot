@@ -1,6 +1,3 @@
-import lejos.nxt.Motor;
-import lejos.nxt.SensorPort;
-import lejos.nxt.UltrasonicSensor;
 
 public class NXTRobot {
 
@@ -20,7 +17,7 @@ public class NXTRobot {
 	public void frente() {
 		frente(DEFAULTVALUE);
 	}
-	
+
 	public void frenteSlow() {
 		frente(SLOWVALUE);
 	}
@@ -38,6 +35,11 @@ public class NXTRobot {
 	public void reVolanteEsquerda() {
 		Motor.A.rotate(DEFAULTVALUE, true);
 		Motor.C.rotate(DEFAULTVALUE*2);
+	}
+
+	public void movimentar(final Ponto2D ultimoPonto, final Ponto2D p0p1p2p3) {
+		Motor.A.rotate((ultimoPonto.getX() - p0p1p2p3.getX()) * 10);
+		Motor.A.rotate((ultimoPonto.getY() - p0p1p2p3.getY()) * 10);
 	}
 }
 

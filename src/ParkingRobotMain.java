@@ -1,50 +1,44 @@
+
+
 public class ParkingRobotMain {
 
-	private static int tetoVagaPequena = 30;
-	
+	private static int move = 10;
+	private static int size = 75;
+
 	public static void main(final String[] args) {
 		NXTRobot robo = new NXTRobot();
 		int espacoLivre = 0;
-//		while(!robo.ehVaga()){
-//			robo.frenteSlow();
-//		}
-//		while(robo.ehVaga()){
-//			robo.frenteSlow();
-//			espacoLivre++;
-//		}
-//		if(espacoLivre < tetoVagaPequena){
-			int[] movements = encontrar4Pontos(espacoLivre);
-			for(int i = 0; i < movements[0]; i++){
-				robo.reVolanteDireita();
-			}
-			for(int i = 0; i < movements[1]; i++){
-				robo.reVolanteReto();
-			}
-			for(int i = 0; i < movements[2]; i++){
-				robo.reVolanteEsquerda();
-			}
-			for(int i = 0; i < movements[3]; i++){
-				robo.frente();
-			}
-//		}
-			
+		while(!robo.ehVaga()){
+			robo.frente();
+		}
+		while(robo.ehVaga()){
+			robo.frente();
+			espacoLivre += move;
+		}
+
+		Ponto2D p0 = new Ponto2D(-espacoLivre, 0);
+		Ponto2D p1 = new Ponto2D(-(espacoLivre * 0.6), 0);
+		Ponto2D p2 = new Ponto2D(-(espacoLivre * 0.6), size);
+		Ponto2D p3 = new Ponto2D(0, size);
+		Ponto2D ultimoPonto = p0;
+		for (float t = 0.05f; t < 1.001f; t = t + 0.05f) {
+			Ponto2D p0p1 = calculaPontoSpline(p0, p1, t);
+			Ponto2D p1p2 = calculaPontoSpline(p1, p2, t);
+			Ponto2D p2p3 = calculaPontoSpline(p2, p3, t);
+
+			Ponto2D p0p1p2 = calculaPontoSpline(p0p1, p1p2, t);
+			Ponto2D p1p2p3 = calculaPontoSpline(p1p2, p2p3, t);
+
+			Ponto2D p0p1p2p3 = calculaPontoSpline(p0p1p2, p1p2p3, t);
+			robo.movimentar(ultimoPonto, p0p1p2p3);
+			ultimoPonto = p0p1p2p3;
+		}
 	}
 
-	private static int[] encontrar4Pontos(final int espacoTotal){
-		//TODO - apartir do espacoTotal bolar uma formula de descobrir os numeros pra `estacionar corretamente`
-		/*https://researchbank.rmit.edu.au/eserv/rmit:24157/n2006044655.pdf
-		 * primeiro ponto eh o ponto da roda traseira do robo, que deve estar alinhado com o fim do obstaculo
-		 * segundo ponto eh o primeiro ponto - metade do tamanho da vaga
-		 * terceiro ponto eh o segundo ponto + largura da vaga
-		 * quarto ponto eh o terceiro ponto - metade do tamanho da vaga
-		 * aplicar formula do splines, N2-6 de CG
-		 */
-		int[] ret = new int[4];
-		ret[0] = 3;
-		ret[1] = 3;
-		ret[2] = 3;
-		ret[3] = 1;
-		return ret;
-	}
+	private static Ponto2D calculaPontoSpline(final Ponto2D ponto1, final Ponto2D ponto2, final float t) {
+		double x = ponto1.getX() + ((ponto2.getX() - ponto1.getX()) * t);
+		double y = ponto1.getY() + ((ponto2.getY() - ponto1.getY()) * t);
 
+		return new Ponto2D(x, y);
+	}
 }
