@@ -3,29 +3,31 @@ public class men {
 
 	private static int move = 10;
 	private static int size = 75;
+	private static int totalx = 0;
+	private static int totaly = 0;
 
 	public static void main(final String[] args) {
-//		NXTRobot robo = new NXTRobot();
+		//		NXTRobot robo = new NXTRobot();
 		int espacoLivre = 180;
-//		while(!robo.ehVaga()){
-//			robo.frente();
-//		}
-//		while(robo.ehVaga()){
-//			robo.frente();
-//			espacoLivre += move;
-//		}
+		//		while(!robo.ehVaga()){
+		//			robo.frente();
+		//		}
+		//		while(robo.ehVaga()){
+		//			robo.frente();
+		//			espacoLivre += move;
+		//		}
 
-//		Ponto2D p0 = new Ponto2D(0, 0);
-//		Ponto2D p1 = new Ponto2D(-(espacoLivre / 3.4), 0);
-//		Ponto2D p2 = new Ponto2D(-(espacoLivre / 3.4), espacoLivre / 3);
-//		Ponto2D p3 = new Ponto2D(-espacoLivre, espacoLivre / 3);
-		
+		//		Ponto2D p0 = new Ponto2D(0, 0);
+		//		Ponto2D p1 = new Ponto2D(-(espacoLivre / 3.4), 0);
+		//		Ponto2D p2 = new Ponto2D(-(espacoLivre / 3.4), espacoLivre / 3);
+		//		Ponto2D p3 = new Ponto2D(-espacoLivre, espacoLivre / 3);
+
 		Ponto2D p0 = new Ponto2D(espacoLivre, espacoLivre / 3);
 		Ponto2D p1 = new Ponto2D(espacoLivre / 3.4, espacoLivre / 3);
 		Ponto2D p2 = new Ponto2D(espacoLivre / 3.4, 0);
 		Ponto2D p3 = new Ponto2D(0, 0);
 		Ponto2D ultimoPonto = p0;
-		System.out.println(p0);
+		//		System.out.println(p0);
 		for (float t = 0.05f; t < 1.001f; t = t + 0.05f) {
 			Ponto2D p0p1 = calculaPontoSpline(p0, p1, t);
 			Ponto2D p1p2 = calculaPontoSpline(p1, p2, t);
@@ -35,17 +37,20 @@ public class men {
 			Ponto2D p1p2p3 = calculaPontoSpline(p1p2, p2p3, t);
 
 			Ponto2D p0p1p2p3 = calculaPontoSpline(p0p1p2, p1p2p3, t);
-			System.out.println(p0p1p2p3);
+			//			System.out.println(p0p1p2p3);
 			movimentar(ultimoPonto, p0p1p2p3);
 			ultimoPonto = p0p1p2p3;
 		}
+		System.out.println("totalx: " + totalx + " - totaly: " + totaly);
 	}
-	
+
 	public static void movimentar(final Ponto2D ultimoPonto, final Ponto2D p0p1p2p3) {
-		double variacaoX = (ultimoPonto.getX() - p0p1p2p3.getX()) * 5;
-		double variacaoY = (ultimoPonto.getY() - p0p1p2p3.getY()) * 10;
+		double variacaoX = (ultimoPonto.getX() - p0p1p2p3.getX());
+		double variacaoY = (ultimoPonto.getY() - p0p1p2p3.getY());
 		int x = (int) variacaoX;
 		int y = (int) (variacaoX - variacaoY);
+		totalx += x;
+		totaly += y;
 		System.out.println("x: " + x + "  - y: " + y);
 	}
 
