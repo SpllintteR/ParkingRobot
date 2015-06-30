@@ -1,6 +1,3 @@
-import lejos.nxt.Motor;
-import lejos.nxt.SensorPort;
-import lejos.nxt.UltrasonicSensor;
 
 
 public class NXTRobot {
@@ -8,7 +5,8 @@ public class NXTRobot {
 	private static int DEFAULTVALUE = 50;
 	private static int CURVAVALUE = 10;
 	private static UltrasonicSensor sensor = new UltrasonicSensor(SensorPort.S4);
-	private int lasty = 0;
+	private final int lasty = 0;
+	private static int MOV = 350;
 
 	public boolean ehVaga() {
 		int d = sensor.getDistance();
@@ -24,17 +22,17 @@ public class NXTRobot {
 		frente(DEFAULTVALUE);
 	}
 
-	public void movimentar(final Ponto2D ultimoPonto, final Ponto2D p0p1p2p3) {
-		double variacaoX = 2200 / (ultimoPonto.getX() - p0p1p2p3.getX());
-		double variacaoY = (ultimoPonto.getY() - p0p1p2p3.getY()) * 15;
-//		System.out.println("x: " + variacaoX + "y: " + variacaoY);
-		int x = (int) variacaoX;
-		int y = (int) (variacaoY);
-		int a = x;
-		int c = y - (int) (1.07*lasty) + a;
-		lasty = y;
-		Motor.A.rotate(a, true);
-		Motor.C.rotate(c);
+	public void movimentar(final Ponto2D p1, final Ponto2D p2) {
+		double angulo = encontrarAngulo(p1, p2); // em graus, ex: 45
+		double diff = (-MOV * angulo) / 90;
+		Motor.A.rotate(MOV, true);
+		Motor.C.rotate(diff);
+	}
+
+	private double encontrarAngulo(final Ponto2D p1, final Ponto2D p2){
+		double x = p2.getY() - p1.getY();
+		double y = p2.getX() - p1.getX();
+		return  Math.atan2(y, x) * (180 / Math.PI);
 	}
 }
 
