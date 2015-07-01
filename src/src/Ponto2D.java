@@ -1,3 +1,4 @@
+package src;
 public class Ponto2D {
 	
 	private double x;

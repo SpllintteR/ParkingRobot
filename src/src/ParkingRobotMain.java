@@ -1,3 +1,4 @@
+package src;
 public class ParkingRobotMain {
 
 	private static int move = 50;
@@ -13,14 +14,20 @@ public class ParkingRobotMain {
 			robo.frente();
 			espacoLivre += move;
 		}
-
+		robo.frente();
+		robo.frente();
+		espacoLivre += (2 * move);
+		System.out.println(espacoLivre);
 		Ponto2D p0 = new Ponto2D(espacoLivre, espacoLivre / 3);
 		Ponto2D p1 = new Ponto2D(espacoLivre / 2, espacoLivre / 3);
 		Ponto2D p2 = new Ponto2D(espacoLivre / 2, 0);
 		Ponto2D p3 = new Ponto2D(0, 0);
 		Ponto2D ultimoPonto = p0;
-		for (float t = 0.05f; t < 1.001f; t = t + 0.05f) {
-			System.out.println(t);
+		float count = espacoLivre / move;
+		float min = 1 / count;
+		System.out.println(count);
+		System.out.println(min);
+		for (float t = min; t < 1.001f; t = t + min) {
 			Ponto2D p0p1 = calculaPontoSpline(p0, p1, t);
 			Ponto2D p1p2 = calculaPontoSpline(p1, p2, t);
 			Ponto2D p2p3 = calculaPontoSpline(p2, p3, t);
@@ -29,7 +36,6 @@ public class ParkingRobotMain {
 			Ponto2D p1p2p3 = calculaPontoSpline(p1p2, p2p3, t);
 
 			Ponto2D p0p1p2p3 = calculaPontoSpline(p0p1p2, p1p2p3, t);
-			System.out.println("movimentar");
 			robo.movimentar(ultimoPonto, p0p1p2p3);
 			ultimoPonto = p0p1p2p3;
 		}
